@@ -16,7 +16,7 @@ This project is a Weather Data Collection System that demonstrates core DevOps p
 
 ## Features
 - Fetches real-time weather data for multiple cities
-- Displays temperature (°F), humidity, and weather conditions
+- Displays temperature (°C), humidity, and weather conditions
 - Automatically stores weather data in AWS S3
 - Supports multiple cities tracking
 - Timestamps all data for historical tracking
@@ -44,18 +44,18 @@ weather-dashboard/
 
 ## Setup Instructions
 1. Clone the repository:
---bash
-git clone https://github.com/ShaeInTheCloud/30days-weather-dashboard.git
+
+git clone https://github.com/DaveBryan001/weather-dashboard.git
 
 3. Install dependencies:
-bashCopypip install -r requirements.txt
+pip install -r requirements.txt
 
 4. Configure environment variables (.env):
-CopyOPENWEATHER_API_KEY=your_api_key
+OPENWEATHER_API_KEY=your_api_key
 AWS_BUCKET_NAME=your_bucket_name
 
 4.Configure AWS credentials:
-bashCopyaws configure
+aws configure
 
 5. Run the application:
 python src/weather_dashboard.py
