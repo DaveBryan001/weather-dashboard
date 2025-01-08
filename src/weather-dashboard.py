@@ -67,17 +67,74 @@ class WeatherDashboard:
             print(f"Error saving to S3: {e}")
             return False
 
+    def load_cities(self):
+        """Load available cities from JSON file"""
+        try:
+            # Open the file with UTF-8 encoding
+            with open('data/cities.json', 'r', encoding='utf-8') as file:
+                data = json.load(file)
+                # Check if the JSON content is a list
+                if isinstance(data, list):
+                    return [city['name'] for city in data]  # Extract just the city names
+                else:
+                    print("Error: Expected a list of cities in cities.json.")
+                    return []
+        except FileNotFoundError:
+            print("Error: cities.json file not found!")
+            return []
+        except UnicodeDecodeError as e:
+            print(f"Error decoding the JSON file: {e}")
+            return []
+
+
+
+
+def search_cities(cities, query, limit=15):
+    """Search cities by a query and return a limited number of results"""
+    # Filter cities case-insensitively
+    filtered_cities = [city for city in cities if query.lower() in city.lower()]
+    return filtered_cities[:limit]
+   
 def main():
     dashboard = WeatherDashboard()
     
     # Create bucket if needed
     dashboard.create_bucket_if_not_exists()
     
-    cities = ["Accra","Kumasi", "New York"]
+    cities = dashboard.load_cities()
     
-    for city in cities:
-        print(f"\nFetching weather for {city}...")
+    if not cities:
+        print("No cities available for search.")
+        return
+    
+    # get user input
+    query = input("Enter a city's name to search: ")
+    
+    # search json for city name
+    search_results = search_cities(cities, query)
+    
+    if not search_results:
+        print(f"No cities found matching '{query}'. Try a different search.")
+        return
+
+    print(f"\nSearch results for '{query}':")
+    for index, city in enumerate(search_results, start=1):
+        print(f"{index}. {city}")
+    
+    try:
+        # ask user to input a number corresponding to a city
+        choice = int(input("\nEnter the number of the city you want to search for: ")) - 1
+        
+        if choice < 0 or choice >= len(search_results):
+            print("Invalid choice!")
+            return
+        
+        city = search_results[choice]
+        print(f"\nYou selected: {city}")
+        
+        # get the weather for selected city
         weather_data = dashboard.fetch_weather(city)
+        
         if weather_data:
             temp = weather_data['main']['temp']
             feels_like = weather_data['main']['feels_like']
@@ -89,12 +146,13 @@ def main():
             print(f"Humidity: {humidity}%")
             print(f"Conditions: {description}")
             
-            # Save to S3
-            success = dashboard.save_to_s3(weather_data, city)
-            if success:
-                print(f"Weather data for {city} saved to S3!")
+            # Save weather data to S3
+            dashboard.save_to_s3(weather_data, city)
         else:
             print(f"Failed to fetch weather data for {city}")
+        
+    except ValueError:
+        print("Invalid input. Please enter a number.")
 
 if __name__ == "__main__":
     main()
