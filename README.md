@@ -1,36 +1,57 @@
-# 30 Days DevOps Challenge - Weather Dashboard
+# 30 Days Devops Challenge - Weather Dashboard
 
-Day 1: Building a weather data collection system using AWS S3 and OpenWeather API
-
-# Weather Data Collection System - DevOps Day 1 Challenge
-
-## Project Overview
-This project is a Weather Data Collection System that demonstrates core DevOps principles by combining:
-- External API Integration (OpenWeather API)
-- Cloud Storage (AWS S3)
-- Infrastructure as Code
-- Version Control (Git)
-- Python Development
-- Error Handling
-- Environment Management
+## Weather Data Collection System - DevOps Day 1 Challenge
+The Weather Dashboard is a Python application that fetches weather data for a specified city using the OpenWeather API and saves the data to an AWS S3 bucket.
 
 ## Features
-- Fetches real-time weather data for multiple cities
-- Displays temperature (°C), humidity, and weather conditions
-- Automatically stores weather data in AWS S3
-- Supports multiple cities tracking
-- Timestamps all data for historical tracking
 
-## Technical Architecture
-- **Language:** Python 3.x
-- **Cloud Provider:** AWS (S3)
-- **External API:** OpenWeather API
-- **Dependencies:** 
-  - boto3 (AWS SDK)
-  - python-dotenv
-  - requests
+- Fetch real-time weather data for a city from the OpenWeather API
+- Displays temperature (°C), humidity, and other   weather conditions
+- Save weather data to an AWS S3 bucket
+- Search for cities from a predefined list
+- Timestamps data for historical tracking
 
-```markdown
+## Prerequisites
+
+- Python 3.7+
+- AWS account with S3 access
+- OpenWeather API key
+
+## Installation
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/davebryan001/weather-dashboard.git
+    cd weather-dashboard
+    ```
+
+2. Create a virtual environment and activate it:
+    ```sh
+    python -m venv venv
+    path\\to\\env\\Scripts\\activate  # On Windows
+    source venv/bin/activate      # On macOS/Linux
+    ```
+
+3. Install the required packages:
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+4. Create a .env file in the root directory and add your OpenWeather API key and AWS S3 bucket name:
+    ```env
+    OPENWEATHER_API_KEY=your_openweather_api_key
+    AWS_BUCKET_NAME=your_s3_bucket_name
+    ```
+
+## Usage
+
+1. Run the application:
+    ```sh
+    python src/weather-dashboard.py
+    ```
+
+2. Follow the prompts to search for a city and fetch its weather data.
+
 ## Project Structure
 weather-dashboard/
   src/
@@ -38,41 +59,19 @@ weather-dashboard/
     weather_dashboard.py
   tests/
   data/
+    cities.json
   .env
   .gitignore
   requirements.txt
+  README.md
 
-## Setup Instructions
-1. Clone the repository:
+## What I Learned
 
-git clone https://github.com/DaveBryan001/weather-dashboard.git
+During the development of this project, I learned:
 
-3. Install dependencies:
-pip install -r requirements.txt
+- How to interact with the OpenWeather API to fetch weather data.
+- How to handle user input and validate choices in a command-line application.
+- How to use AWS S3 to store and retrieve data using the AWS python sdk.
+- Error handling in distributed systems.
 
-4. Configure environment variables (.env):
-OPENWEATHER_API_KEY=your_api_key
-AWS_BUCKET_NAME=your_bucket_name
 
-4.Configure AWS credentials:
-aws configure
-
-5. Run the application:
-python src/weather_dashboard.py
-
-What I Learned
-
-AWS S3 bucket creation and management
-Environment variable management for secure API keys
-Python best practices for API integration
-Git workflow for project development
-Error handling in distributed systems
-Cloud resource management
-
-Future Enhancements
-
-Add weather forecasting
-Implement data visualization
-Add more cities
-Create automated testing
-Set up CI/CD pipeline
